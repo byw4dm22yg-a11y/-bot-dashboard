@@ -1,0 +1,18 @@
+time_utc,symbol,action,qty,price,reason,dry_run
+2026-10-17T19:22:46.125578+00:00,AAPL,buy,0.15,343.46,"Strong momentum: at 52w high, price well above SMA50 and SMA200, solid 1y/3y/5y returns, low current drawdown. Near-term chg modest but trend intact.",False
+2026-10-18T11:09:04.569978+00:00,AAPL,buy,0.73,343.46,"At 52w high, price well above SMA50/SMA200, strong 1y and long-term CAGR, low drawdown. Momentum solid, initiating position.",False
+2026-10-20T16:37:02.509419+00:00,MSFT,buy,0.28,531.83,"All four buy rules met: price above SMA50, above SMA200, 1-month change positive, and not more than 30% above SMA50.",False
+2026-10-20T16:37:02.509419+00:00,MRNA,buy,0.32,235.46,"All four buy rules met: price above SMA50, above SMA200, 1-month change strongly positive, and within 30% of SMA50.",False
+2026-10-20T17:35:47.898494+00:00,WING,buy,0.57,131.23,"All four buy rules met: price above 50-day and 200-day averages, 1-month change positive, and not more than 30% above 50-day average.",False
+2026-10-20T17:35:47.898494+00:00,BILL,buy,1.54,48.61,"All four buy rules met: price above both moving averages, 1-month change positive, and within 30% of 50-day average.",False
+2026-10-20T19:38:46.868064+00:00,W,buy,0.66,113.9,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and within 30% of sma50.",False
+2026-10-20T19:38:46.868064+00:00,TOST,buy,2.29,32.74,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and within 30% of sma50.",False
+2026-10-20T20:36:30.503566+00:00,BB,buy,8.46,8.87,"All four buy rules met: price above sma50 and sma200, positive 1-month change, and not more than 30% above sma50.",False
+2026-10-21T14:39:15.052621+00:00,SNAP,buy,11.72,6.4,"All four buy rules met: price above sma50, above sma200, 1m change positive, and not more than 30% above sma50.",False
+2026-10-21T14:39:15.052621+00:00,AMC,buy,24.35,3.08,"All four buy rules met: price above sma50, above sma200, 1m change positive, and not more than 30% above sma50.",False
+2026-10-21T15:39:14.493131+00:00,BILL,buy,1.52,49.29,"All four buy rules met: price above 50-day, above 200-day, 1-month change positive, and within 30% of 50-day average.",False
+2026-10-21T15:39:14.493131+00:00,SHOP,buy,0.42,177.82,"All four buy rules met: price above 50-day, above 200-day, 1-month change positive, and within 30% of 50-day average.",False
+2026-10-21T16:37:49.517180+00:00,MSFT,buy,0.28,532.02,"All four buy rules met: price above SMA50, above SMA200, 1m change positive, and not more than 30% above SMA50.",False
+2026-10-21T17:34:57.449410+00:00,AFRM,buy,1.0,75.12,"All four buy rules met: price above 50d and 200d averages, 1m change positive, and not more than 30% above 50d average.",False
+2026-10-21T19:38:01.707610+00:00,NVDA,sell,-0.69,221.23,"Price has fallen below its 50-day average and 1-month change is negative, triggering the sell rule.",False
+2026-10-21T19:38:01.707610+00:00,ZS,buy,0.32,231.18,"All four buy rules met: price above sma50, sma200, positive 1-month change, and within 30% of sma50.",False
