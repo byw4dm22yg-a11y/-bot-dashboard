@@ -1,0 +1,2 @@
+time_utc,coin,side,qty,price,fee_usd,usd,rule,confidence,reason
+2026-10-20T19:15:46+00:00,BTC,buy,0.00121131,82472.614137,0.1,100.0,claude,0.8,"All five buy rules met: price above sma50 and sma200, chg_30d_pct positive, rsi14 below 75, chg_7d_pct below 20."
