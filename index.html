@@ -1,0 +1,87 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bot Radar</title><style>
+:root{--bg:#000;--card:#0a0a0a;--fg:#e8f5ef;--mut:#7d8b85;--line:#1e2522;--acc:#2fe0a8;--bad:#ff5c5c;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:16px}
+h1{font-size:20px;margin:0 0 2px;letter-spacing:.04em}
+.sub{color:var(--mut);font-size:12px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;min-width:0}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin:0 0 10px}
+.big{font-size:28px;font-weight:700}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1 1 120px;min-width:0}
+.pos{color:var(--acc)}.neg{color:var(--bad)}
+.tw{overflow:auto;max-height:340px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+th{color:var(--mut);font-weight:600}
+#scan{position:relative;height:150px;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-bottom:14px}
+#scan canvas{width:100%;height:100%;display:block}
+#scanlbl{position:absolute;left:12px;bottom:10px;font-size:12px;color:var(--acc)}
+.hint{color:var(--mut);font-size:12px;margin-top:6px}
+canvas#ch,canvas#ch2{width:100%;height:120px;display:block}
+</style></head><body>
+<h1>BOT RADAR</h1>
+<div class="sub">Stock bot (Trading 212 demo) + Crypto paper bot</div>
+<div id="scan"><canvas id="sc"></canvas><div id="scanlbl"></div></div>
+<div id="out"></div>
+<script>
+const $=id=>document.getElementById(id);
+const mem={};
+function get(k){return mem[k]||""}
+function parseCSV(t){let rows=[];let r=[],f="",q=false;t=t.replace(/\r/g,"");
+ for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
+  else if(c=='"')q=true;else if(c==','){r.push(f);f=""}else if(c=='\n'){r.push(f);rows.push(r);r=[];f=""}else f+=c}
+ if(f||r.length){r.push(f);rows.push(r)}
+ rows=rows.filter(x=>x.some(y=>y.trim()));
+ if(!rows.length)return[];const h=rows[0].map(x=>x.trim());
+ return rows.slice(1).map(x=>Object.fromEntries(h.map((k,i)=>[k,(x[i]||"").trim()])));}
+const num=v=>{const x=parseFloat(String(v).replace(/[£$,%]/g,""));return isNaN(x)?null:x};
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function table(rows,max){if(!rows.length)return'<div class="hint">No rows yet.</div>';
+ const h=Object.keys(rows[0]);const last=rows.slice(-max).reverse();
+ return'<div class="tw"><table><tr>'+h.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr>'+
+ last.map(r=>'<tr>'+h.map(k=>{let v=r[k];if(/^(buy|BUY)$/.test(v))v='<span class="pos">'+v+'</span>';else if(/^(sell|SELL)$/.test(v))v='<span class="neg">'+v+'</span>';else v=esc(v);return'<td>'+v+'</td>'}).join('')+'</tr>').join('')+'</table></div>'}
+function spark(c,vals,vals2){const ctx=c.getContext('2d');const w=c.width=c.clientWidth*2,h=c.height=c.clientHeight*2;ctx.clearRect(0,0,w,h);
+ const all=vals.concat(vals2||[]);if(all.length<2)return;const mn=Math.min(...all),mx=Math.max(...all)||1,rg=(mx-mn)||1;
+ const line=(a,col,dash)=>{ctx.beginPath();ctx.setLineDash(dash?[8,8]:[]);ctx.lineWidth=3;ctx.strokeStyle=col;
+  a.forEach((v,i)=>{const x=i/(a.length-1)*(w-8)+4,y=h-6-(v-mn)/rg*(h-12);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()};
+ line(vals,'#2fe0a8');
+ if(vals2)line(vals2,'#7d8b85',true)}
+let rows=0;
+function render(){
+ const st=parseCSV(get('stock')),eq=parseCSV(get('eq')),ct=parseCSV(get('ct')),dc=parseCSV(get('dc')),se=parseCSV(get('se'));
+ const sp=se.map(r=>({v:num(r.account_gbp),b:num(r.vusa_gbp)})).filter(p=>p.v!=null&&p.b!=null);
+ let h='';
+ const sv=[100].concat(sp.map(p=>p.v/5000*100)),sb=[100].concat(sp.map(p=>p.b/109.91*100));
+ const sl=sp.length?sp[sp.length-1]:null;
+ h+='<div class="card"><h2>Stock AI vs VUSA</h2><div class="row"><div><div class="hint">AI</div><div class="big '+(sl&&sl.v>=5000?'pos':'neg')+'">'+(sl?((sl.v/5000-1)*100).toFixed(2)+'%':'—')+'</div></div><div><div class="hint">VUSA</div><div class="big">'+(sl?((sl.b/109.91-1)*100).toFixed(2)+'%':'—')+'</div></div></div><canvas id="ch2"></canvas><div class="hint">Solid = AI, dashed = VUSA &middot; % change since 20 Oct &middot; '+(sp.length?sp.length+' points':'waiting for first data')+'</div></div>';
+ if(eq.length){const l=eq[eq.length-1];const e=num(l.equity_usd),b=num(l.btc_hold_usd),d=num(l.bot_vs_hold_pct);
+  h+='<div class="card"><h2>Crypto paper bot vs buy &amp; hold BTC</h2><div class="row"><div><div class="hint">Bot</div><div class="big">$'+(e??'?')+'</div></div><div><div class="hint">Just holding BTC</div><div class="big">$'+(b??'?')+'</div></div><div><div class="hint">Bot vs hold</div><div class="big '+(d>=0?'pos':'neg')+'">'+(d!=null?(d>0?'+':'')+d+'%':'?')+'</div></div></div><canvas id="ch"></canvas><div class="hint">Solid = AI, dashed = just holding BTC &middot; % change since start &middot; '+eq.length+' check-ins</div></div>'}
+ if(ct.length)h+='<div class="card"><h2>Crypto trades, pretend ('+ct.length+')</h2>'+table(ct,2000)+'</div>';
+ if(dc.length)h+='<div class="card"><h2>Crypto AI decisions ('+dc.length+')</h2>'+table(dc,2000)+'</div>';
+ if(st.length)h+='<div class="card"><h2>Stock bot trades ('+st.length+')</h2>'+table(st,2000)+'</div>';
+ if(eq.length)h+='<div class="card"><h2>Crypto equity log ('+eq.length+')</h2>'+table(eq,2000)+'</div>';
+ $('out').innerHTML=h;
+ const c=$('ch');if(c){const a=eq.map(r=>num(r.equity_usd)).filter(x=>x!=null),b=eq.map(r=>num(r.btc_hold_usd)).filter(x=>x!=null);spark(c,a.map(x=>x/a[0]*100-100),b.map(x=>x/b[0]*100-100))}
+ const c2=$('ch2');if(c2)spark(c2,sv.map(x=>x-100),sb.map(x=>x-100));
+ rows=st.length+eq.length+ct.length+dc.length;
+}
+const sc=$('sc'),sx=sc.getContext('2d');let until=0,raf;
+function scan(ms){until=performance.now()+ms;cancelAnimationFrame(raf);const words=['READING TRADES','CHECKING PRICES','COMPARING TO BENCHMARK','SCANNING SIGNALS'];
+ const tick=n=>{const w=sc.width=sc.clientWidth*2,h=sc.height=sc.clientHeight*2;sx.clearRect(0,0,w,h);
+  sx.fillStyle='#2fe0a8';sx.font='20px monospace';
+  const cols=Math.floor(w/22),live=n<until;
+  for(let i=0;i<cols;i++){const s=.05+((i*37)%11)/80;const y=((n*s+i*53)%(h+80))-40;
+   for(let j=0;j<6;j++){sx.globalAlpha=live?(1-j/6)*.8:(1-j/6)*.15;sx.fillText(Math.random()<.5?'0':'1',i*22,y-j*22)}}
+  sx.globalAlpha=1;
+  if(live){$('scanlbl').textContent=words[Math.floor(n/450)%4]+' ...'}
+  else{$('scanlbl').textContent='LIVE \u00b7 '+rows+' rows \u00b7 updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+  if(live||n<until+600)raf=requestAnimationFrame(tick)};
+ raf=requestAnimationFrame(tick)}
+async function pull(){
+ const f={stock:'data/stock_trades.csv',eq:'data/crypto_equity.csv',ct:'data/crypto_trades.csv',dc:'data/crypto_decisions.csv',se:'data/stock_equity.csv'};
+ for(const k in f){try{const r=await fetch(f[k]+'?t='+Date.now());if(r.ok)mem[k]=await r.text();}catch(e){}}
+ render();
+}
+pull();scan(2200);setInterval(pull,300000);
+</script></body></html>
