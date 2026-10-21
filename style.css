@@ -1,0 +1,30 @@
+:root{--bg:#02060b;--card:#06121c;--fg:#d7f3ff;--mut:#6f93a8;--line:#12384f;--cy:#3fd8ff;--gold:#f2b84b;--bad:#ff4b4b;--good:#3fd8ff}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#0b2a3d 0,var(--bg) 60%) fixed;color:var(--fg);font:14px/1.45 "Rajdhani",ui-monospace,Menlo,monospace;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:16px;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(63,216,255,.035) 0 1px,transparent 1px 3px);z-index:5}
+header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.reactor{width:64px;height:64px;flex:none;border-radius:50%;position:relative;background:radial-gradient(circle,#fff 0 6%,#aeeeff 7% 16%,var(--cy) 17% 24%,transparent 25%);box-shadow:0 0 18px var(--cy),0 0 40px rgba(63,216,255,.5);animation:pulse 3s ease-in-out infinite}
+.reactor:before,.reactor:after{content:"";position:absolute;border-radius:50%;border:2px solid var(--cy)}
+.reactor:before{inset:7px;border-style:dashed;animation:spin 14s linear infinite}
+.reactor:after{inset:-5px;border-color:rgba(63,216,255,.4);border-top-color:var(--gold);animation:spin 6s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{box-shadow:0 0 26px var(--cy),0 0 60px rgba(63,216,255,.7)}}
+h1{font:700 22px "Orbitron","Rajdhani",monospace;letter-spacing:.18em;margin:0;color:var(--cy);text-shadow:0 0 10px rgba(63,216,255,.7)}
+.sub{color:var(--gold);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+.card{position:relative;background:linear-gradient(180deg,rgba(10,40,58,.55),rgba(6,18,28,.9));border:1px solid var(--line);padding:14px;margin-bottom:14px;min-width:0;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
+.card:before{content:"";position:absolute;left:0;top:0;width:34px;height:34px;border-left:2px solid var(--cy);border-top:2px solid var(--cy)}
+.card:after{content:"";position:absolute;right:0;bottom:0;width:34px;height:34px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold)}
+h2{font:600 12px "Orbitron","Rajdhani",monospace;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin:0 0 10px}
+.big{font:700 30px "Orbitron","Rajdhani",monospace;text-shadow:0 0 12px rgba(63,216,255,.35)}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1 1 110px;min-width:0}
+.pos{color:var(--cy)}.neg{color:var(--bad);text-shadow:0 0 10px rgba(255,75,75,.4)}
+.tw{overflow:auto;max-height:340px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+th{color:var(--gold);font-weight:600;letter-spacing:.08em}
+#scan{position:relative;height:130px;overflow:hidden;border:1px solid var(--line);background:var(--card);margin-bottom:14px}
+#scan canvas{width:100%;height:100%;display:block}
+#scanlbl{position:absolute;left:12px;bottom:8px;font-size:12px;letter-spacing:.15em;color:var(--cy)}
+.hint{color:var(--mut);font-size:12px;margin-top:6px}
+canvas#ch,canvas#ch2{width:100%;height:130px;display:block}
