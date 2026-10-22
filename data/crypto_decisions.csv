@@ -47,3 +47,9 @@ time_utc,coin,action,usd_amount,confidence,outcome,reason
 2026-10-21T20:36:12+00:00,XRP,hold,0,0.3,hold,"Price below sma50 and chg_30d_pct negative, failing buy rules 1 and 3."
 2026-10-21T20:36:12+00:00,DOGE,hold,0,0.3,hold,"Price below sma50 and sma200, chg_30d_pct negative, multiple buy rules failed."
 2026-10-21T20:36:12+00:00,ADA,hold,0,0.3,hold,"Price below sma50 and chg_30d_pct negative, failing buy rules 1 and 3."
+2026-10-22T00:46:16+00:00,BTC,hold,0,0.3,hold,"chg_30d_pct is negative so sell rule does not trigger (price above sma50), but no new buy signal needed as already held."
+2026-10-22T00:46:16+00:00,ETH,hold,0,0.3,hold,"Price below sma50 and chg_30d_pct negative, but not held so no sell; buy rules not met."
+2026-10-22T00:46:16+00:00,SOL,hold,0,0.3,hold,Price below sma50 and chg_30d_pct negative; buy rules not met.
+2026-10-22T00:46:16+00:00,XRP,hold,0,0.3,hold,Price below sma50 and chg_30d_pct negative; buy rules not met.
+2026-10-22T00:46:16+00:00,DOGE,hold,0,0.3,hold,Price below sma50 and chg_30d_pct negative; buy rules not met.
+2026-10-22T00:46:16+00:00,ADA,hold,0,0.3,hold,Price below sma50 and chg_30d_pct negative; buy rules not met.
