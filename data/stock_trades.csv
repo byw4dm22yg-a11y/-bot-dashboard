@@ -16,3 +16,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-21T17:34:57.449410+00:00,AFRM,buy,1.0,75.12,"All four buy rules met: price above 50d and 200d averages, 1m change positive, and not more than 30% above 50d average.",False
 2026-10-21T19:38:01.707610+00:00,NVDA,sell,-0.69,221.23,"Price has fallen below its 50-day average and 1-month change is negative, triggering the sell rule.",False
 2026-10-21T19:38:01.707610+00:00,ZS,buy,0.32,231.18,"All four buy rules met: price above sma50, sma200, positive 1-month change, and within 30% of sma50.",False
+2026-10-22T17:34:51.603214+00:00,RBLX,buy,1.4,53.4,"All four buy rules met: price above both averages, positive 1-month change, and not more than 30% above sma50.",False
+2026-10-22T17:34:51.603214+00:00,PTON,buy,13.81,5.43,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of sma50.",False
