@@ -3,12 +3,13 @@
 <link rel="stylesheet" href="style.css"></head><body>
 <div class="wrap">
 <div id="hero"><canvas id="bh"></canvas>
-<div class="title"><div><h1>Ace</h1><div class="sub">How your two AI bots are doing</div></div><div id="scanlbl"></div></div></div>
+<div class="title"><div><h1>Ace</h1><div class="sub">How your three AI bots are doing</div></div><div id="scanlbl"></div></div></div>
 <div id="out"></div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
 const mem={};let LABEL='Loading ...';
+const words=['Updating','Checking trades','Checking prices','Comparing to the market'];
 const get=k=>mem[k]||"";
 function parseCSV(t){let rows=[];let r=[],f="",q=false;t=t.replace(/\r/g,"");
  for(let i=0;i<t.length;i++){const c=t[i];
@@ -36,7 +37,7 @@ function spark(c,a,b){if(!c||a.length<2)return;const ctx=c.getContext('2d');cons
  if(b.length>1)line(b,'#e6edf7',true,false);
  const g=ctx.createLinearGradient(0,0,w,0);g.addColorStop(0,'#6fb8ff');g.addColorStop(1,'#2f8cff');line(a,g,false,true)}
 function render(){
- const se=parseCSV(get('se')),eq=parseCSV(get('eq')),ct=parseCSV(get('ct')),dc=parseCSV(get('dc')),st=parseCSV(get('st'));
+ const se=parseCSV(get('se')),eq=parseCSV(get('eq')),ct=parseCSV(get('ct')),dc=parseCSV(get('dc')),st=parseCSV(get('st')),fe=parseCSV(get('fe')),ft=parseCSV(get('ft'));
  const sp=se.map(r=>({v:num(r.account_gbp),b:num(r.vusa_gbp)})).filter(p=>p.v!=null&&p.b!=null);
  let h='';
  h+='<div class="card"><h2>Stock bot (Trading 212 practice account)</h2><p class="lead">Compared with simply putting the money in VUSA, a market-tracking fund.</p>';
@@ -55,11 +56,21 @@ function render(){
   if(d!=null)h+='<div class="verdict'+(d<0?' bad':'')+'">'+(d>=0?'<b>Ahead</b> of holding Bitcoin by '+d.toFixed(2)+'%.':'<b>Behind</b> holding Bitcoin by '+(-d).toFixed(2)+'%.')+'</div>'}
  else h+='<div class="empty">Waiting for the crypto bot\'s first update.</div>';
  h+='</div>';
+ h+='<div class="card"><h2>Fast bot (pretend $1,000)</h2><p class="lead">Trades quickly on 15-minute prices using fixed rules, no AI. Compared with holding Bitcoin.</p>';
+ let fa=[],fb=[];
+ if(fe.length){const l=fe[fe.length-1],e=num(l.equity_usd),b=num(l.btc_hold_usd),d=(e!=null&&b)?(e/b-1)*100:null;
+  const e0=num(fe[0].equity_usd),b0=num(fe[0].btc_hold_usd);
+  fa=fe.map(r=>(num(r.equity_usd)/e0-1)*100);fb=fe.map(r=>(num(r.btc_hold_usd)/b0-1)*100);
+  h+='<div class="row"><div><div class="hint">Fast bot is worth</div><div class="big">$'+(e==null?'?':e.toFixed(0))+'</div></div><div><div class="hint">Just holding Bitcoin</div><div class="big dim">$'+(b==null?'?':b.toFixed(0))+'</div></div></div><canvas class="ch" id="c3"></canvas><div class="hint">Blue line = fast bot. White dashed = holding Bitcoin. '+fe.length+' check-ins so far.</div>';
+  if(d!=null)h+='<div class="verdict'+(d<0?' bad':'')+'">'+(d>=0?'<b>Ahead</b> of holding Bitcoin by '+d.toFixed(2)+'%.':'<b>Behind</b> holding Bitcoin by '+(-d).toFixed(2)+'%.')+'</div>'}
+ else h+='<div class="empty">Waiting for the fast bot\'s first update.</div>';
+ h+='</div>';
+ h+='<div class="card"><h2>Fast bot trades</h2><p class="lead">Each pretend buy or sell, with the rule that triggered it.</p>'+table(ft,['time_utc','coin','side','price','usd','rule'],['When','Coin','Buy/Sell','Price','Total $','Rule'],50)+'</div>';
  h+='<div class="card"><h2>Latest crypto trades</h2><p class="lead">Each pretend buy or sell the crypto bot made.</p>'+table(ct,['time_utc','coin','side','qty','price','fee_usd','usd'],['When','Coin','Buy/Sell','Amount','Price','Fee','Total $'],50)+'</div>';
  h+='<div class="card"><h2>Why the crypto bot decided</h2><p class="lead">Its reasoning at each check, newest first.</p>'+table(dc,['time_utc','coin','action','outcome','reason'],['When','Coin','Decision','Result','Reason'],40)+'</div>';
  if(st.length)h+='<div class="card"><h2>Latest stock trades</h2><p class="lead">Each trade the stock bot made on the practice account.</p>'+table(st,Object.keys(st[0]),Object.keys(st[0]),50)+'</div>';
  $('out').innerHTML=h;
- spark($('c1'),sv,sb);spark($('c2'),ea,eb);
+ spark($('c1'),sv,sb);spark($('c2'),ea,eb);spark($('c3'),fa,fb);
  LABEL='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 }
 // ---------- black hole ----------
@@ -96,7 +107,7 @@ let t=0;function frame(){
  requestAnimationFrame(frame)}
 
 async function pull(){
- const f={se:'data/stock_equity.csv',eq:'data/crypto_equity.csv',ct:'data/crypto_trades.csv',dc:'data/crypto_decisions.csv',st:'data/stock_trades.csv'};
+ const f={se:'data/stock_equity.csv',eq:'data/crypto_equity.csv',ct:'data/crypto_trades.csv',dc:'data/crypto_decisions.csv',st:'data/stock_trades.csv',fe:'data/fast_equity.csv',ft:'data/fast_trades.csv'};
  for(const k in f){try{const r=await fetch(f[k]+'?t='+Date.now());if(r.ok)mem[k]=await r.text();}catch(e){}}
  render();
 }
