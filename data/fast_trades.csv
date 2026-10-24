@@ -1,0 +1,2 @@
+time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
+2026-10-24T00:25:08+00:00,TRX,buy,303.00562205,0.329697,0.1,100.0,breakout,"broke 5h high 0.3298, above 50-bar avg, RSI 59, volume up"
