@@ -3,3 +3,5 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-10-24T02:29:46+00:00,VET,buy,13959.341789,0.007156,0.1,99.99,breakout,"broke 5h high 0.00719, above 50-bar avg, RSI 60, volume up"
 2026-10-24T03:30:41+00:00,CRV,buy,278.34173169,0.358779,0.1,99.96,breakout,"broke 5h high 0.3588, above 50-bar avg, RSI 58, volume up"
 2026-10-24T05:28:48+00:00,VET,sell,13959.341789,0.00719,0.1004,100.26,trailing stop,price hit 0.007193 (+0.48% before fees)
+2026-10-24T06:33:50+00:00,TRX,sell,303.00562205,0.329472,0.0998,99.73,time limit,held 6 hours (-0.07% before fees)
+2026-10-24T06:33:50+00:00,CRV,sell,278.34173169,0.353221,0.0983,98.22,stop loss,price hit 0.3534 (-1.55% before fees)
