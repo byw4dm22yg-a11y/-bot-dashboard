@@ -38,6 +38,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 .think{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-size:11px;letter-spacing:.14em;color:var(--teal);text-transform:uppercase;text-shadow:0 0 10px rgba(47,224,208,.6)}
 .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
 .tile{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:rgba(255,255,255,.02);min-width:0}
+.tb{display:flex;flex-direction:column;justify-content:flex-start;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
+.tb.on{border-color:var(--teal);background:rgba(47,224,208,.08)}
+.tb .lbl{white-space:nowrap;letter-spacing:.05em}.tb .lbl::after{content:" \25BE";opacity:.6}.tb.on .lbl::after{content:" \25B4"}
+#posdet{margin-top:10px}.pd{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02);padding:4px 12px}
+.pd .r{padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between}.pd .r:last-child{border:0}
+.pd .l{min-width:0}.pd .l b{font-size:15px}.pd .l small{display:block;color:var(--dim);font-size:12px;margin-top:2px;line-height:1.35}
+.pd .v{font-weight:700;font-size:16px;white-space:nowrap}.pd .h{padding:8px 0;color:var(--dim);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .tile .v{font-size:19px;font-weight:700;display:block;margin-top:2px}
 .meter{height:4px;border-radius:2px;background:#10222f;margin-top:6px;overflow:hidden}
 .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));box-shadow:0 0 8px var(--teal);transition:width 1.2s ease;animation:hueC 22s linear infinite}
@@ -155,6 +162,22 @@ function table(rows,cols,heads,max){if(!rows.length)return'<div class="empty">No
   if(/^buy$/i.test(v))v='<span class="up">buy</span>';else if(/^sell$/i.test(v))v='<span class="down">sell</span>';else if((k==="price"||k==="usd")&&v!==""&&!isNaN(parseFloat(v)))v="£"+gbp(v);else v=esc(k==="time_utc"?v.replace("T"," ").slice(0,16):v);return"<td>"+v+"</td>"}).join("")+"</tr>").join("")+"</table></div>"}
 // crypto prices come in US dollars; shown in pounds at an approximate rate (change FX if the rate moves)
 const FX=0.75,gbp=v=>{const n=parseFloat(v);return isNaN(n)?esc(v):String(Number((n*FX).toPrecision(4)))};
+let TAB=null,POS={closed:[],open:[]};
+function positions(d){const out={closed:[],open:[]};
+ [["stock",d.st,"symbol","action"],["crypto",d.ct,"coin","side"],["fast",d.ft,"coin","side"]].forEach(([bot,rows,sym,side])=>{const open={};
+  rows.slice().sort((a,b)=>(ts(a.time_utc)||0)-(ts(b.time_utc)||0)).forEach(r=>{const s=r[sym],p=num(r.price),b=/buy/i.test(r[side]||"");if(p==null||!s)return;
+   if(b)open[s]={t:ts(r.time_utc),p};else if(open[s]){const o=open[s];out.closed.push({bot,coin:s,tb:o.t,ts:ts(r.time_utc),pb:o.p,ps:p,pct:(p/o.p-1)*100,rule:r.rule});delete open[s]}});
+  Object.keys(open).forEach(s=>out.open.push({bot,coin:s,tb:open[s].t,pb:open[s].p}))});
+ out.closed.sort((a,b)=>(b.ts||0)-(a.ts||0));out.open.sort((a,b)=>(b.tb||0)-(a.tb||0));return out}
+function showPos(){const el=$("posdet");if(!el)return;document.querySelectorAll("#tiles .tb").forEach(b=>b.classList.toggle("on",b.dataset.t===TAB));
+ if(!TAB){el.innerHTML="";return}
+ const px=(o,p)=>o.bot==="stock"?"":"£"+gbp(p),list=POS[TAB];
+ if(!list.length){el.innerHTML='<div class="pd"><div class="h">'+(TAB==="closed"?"Closed trades":"Open positions")+'</div><div class="empty">'+(TAB==="closed"?"No finished trades yet.":"Nothing open right now.")+'</div></div>';return}
+ el.innerHTML='<div class="pd"><div class="h">'+(TAB==="closed"?"Closed trades, newest first":"Open positions")+" ("+list.length+")</div>"+list.slice(0,40).map(o=>{
+  const tag='<span class="tag '+o.bot+'">'+o.bot+'</span> ';
+  if(TAB==="open")return'<div class="r"><div class="l">'+tag+'<b>'+esc(o.coin)+'</b><small>Bought '+ago(o.tb)+(px(o,o.pb)?" at "+px(o,o.pb):"")+'</small></div></div>';
+  const up=o.pct>=0,why=o.rule&&RULE[o.rule]?" · "+(o.rule==="trailing stop"&&!up?"trailing stop hit":RULE[o.rule]):"";
+  return'<div class="r"><div class="l">'+tag+'<b>'+esc(o.coin)+'</b><small>'+(px(o,o.pb)?px(o,o.pb)+" → "+px(o,o.ps)+" · ":"")+"closed "+ago(o.ts)+why+'</small></div><span class="v mono '+(up?"up":"down")+'">'+(up?"+":"")+o.pct.toFixed(2)+"%</span></div>"}).join("")+"</div>"}
 // ---- build ----
 function botPanel(o){ // o: name, sub, color, rows pts, start text etc.
  const p=o.pts;let h='<div class="panel"><div class="bothead"><div><h2>'+o.name+'</h2><p class="sub">'+o.sub+'</p></div>';
@@ -276,7 +299,7 @@ function render(){
   leg+='<div class="lg" style="border-top:2px solid '+col+'"><i></i><div><b>'+b.name+'</b><small>'+(g>=0?"ahead of ":"behind ")+b.vsShort+'</small></div><span class="gap mono '+(g>=0?"up":"down")+'">'+sgn(g,2)+'</span></div>'});
  $("legend").innerHTML=leg;
  const nClosed=PS.reduce((a,s)=>a+s.n,0),nWins=PS.reduce((a,s)=>a+(s.win==null?0:Math.round(s.win*s.n)),0),nOpen=PS.reduce((a,s)=>a+s.open,0),wr=nClosed?nWins/nClosed*100:null;
- $("tiles").innerHTML='<div class="tile"><span class="lbl">Closed</span><span class="v mono" id="t1">0</span></div><div class="tile"><span class="lbl">Win rate</span><span class="v mono" id="t2">'+(wr==null?"–":"0%")+'</span><div class="meter"><i style="width:'+(wr||0)+'%"></i></div></div><div class="tile"><span class="lbl">Open now</span><span class="v mono" id="t3">0</span></div>';
+ $("tiles").innerHTML='<button class="tile tb" data-t="closed"><span class="lbl">Closed</span><span class="v mono" id="t1">0</span></button><div class="tile"><span class="lbl">Win rate</span><span class="v mono" id="t2">'+(wr==null?"–":"0%")+'</span><div class="meter"><i style="width:'+(wr||0)+'%"></i></div></div><button class="tile tb" data-t="open"><span class="lbl">Open now</span><span class="v mono" id="t3">0</span></button>';;if(!$("posdet")){const d=document.createElement("div");d.id="posdet";$("tiles").after(d);$("tiles").addEventListener("click",ev=>{const b=ev.target.closest(".tb");if(!b)return;TAB=TAB===b.dataset.t?null:b.dataset.t;showPos()})}POS=positions({st,ct,ft});showPos();
  const fx=firstRun&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
  if(fx){cnt($("t1"),nClosed,x=>Math.round(x),1100);if(wr!=null)cnt($("t2"),wr,x=>Math.round(x)+"%",1100);cnt($("t3"),nOpen,x=>Math.round(x),1100)}else{$("t1").textContent=nClosed;if(wr!=null)$("t2").textContent=Math.round(wr)+"%";$("t3").textContent=nOpen}
  let h="";bots.forEach(b=>h+=botPanel(b));$("out").innerHTML=h;h="";
@@ -289,9 +312,9 @@ function render(){
  h+='<div class="panel"><h2>What just happened</h2><p class="sub">The latest pretend trades from all three bots.</p><div id="feed">'+events(ev,showAll?60:8)+"</div>"+(ev.length>8?'<button class="more" id="more">'+(showAll?"Show fewer":"Show more")+"</button>":"")+"</div>";
  // details
  h+='<div class="panel"><h2>Full details</h2><p class="sub">The complete logs, if you want to dig in.</p>'+
-  '<details><summary>Fast bot trades ('+ft.length+')</summary>'+table(ft,["time_utc","coin","side","price","usd","rule"],["When","Coin","Buy/Sell","Price","Total $","Why it closed"],60)+"</details>"+
+  '<details><summary>Fast bot trades ('+ft.length+')</summary>'+table(ft,["time_utc","coin","side","price","usd","rule"],["When","Coin","Buy/Sell","Price","Total £","Why it closed"],60)+"</details>"+
   '<details><summary>Stock bot trades ('+st.length+')</summary>'+table(st,["time_utc","symbol","action","qty","price","reason"],["When","Stock","Buy/Sell","Amount","Price","Reason"],60)+"</details>"+
-  '<details><summary>Crypto bot trades ('+ct.length+')</summary>'+table(ct,["time_utc","coin","side","qty","price","usd"],["When","Coin","Buy/Sell","Amount","Price","Total $"],60)+"</details>"+
+  '<details><summary>Crypto bot trades ('+ct.length+')</summary>'+table(ct,["time_utc","coin","side","qty","price","usd"],["When","Coin","Buy/Sell","Amount","Price","Total £"],60)+"</details>"+
   '<details><summary>Why the crypto bot decided ('+dc.length+')</summary>'+table(dc,["time_utc","coin","action","reason"],["When","Coin","Decision","Reason"],60)+"</details></div>";
  h+='<div class="panel guide"><h2>How to read this</h2><p><b>Purple line</b> is the bot. <b>White dashed line</b> is the simple alternative: putting the money in a market fund (VUSA) or just holding Bitcoin.</p><p><b>Ahead</b> means the bot is beating that alternative. Early on, most of the gap comes from the bots holding cash while the market moves, so judge after a few weeks, not days.</p></div>';
  $("out2").innerHTML=h;
