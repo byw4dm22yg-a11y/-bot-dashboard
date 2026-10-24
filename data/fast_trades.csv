@@ -9,3 +9,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-10-24T10:59:19+00:00,TRX,buy,301.98167552,0.33024,0.0998,99.83,breakout,"broke 5h high 0.3297, above 50-bar avg, RSI 65, volume up"
 2026-10-24T14:26:29+00:00,FLOW,sell,3542.16945007,0.027718,0.0982,98.08,stop loss,price hit 0.02773 (-1.55% before fees)
 2026-10-24T14:26:29+00:00,XMR,buy,0.16738971,594.534607,0.0996,99.62,breakout,"broke 5h high 596.7, above 50-bar avg, RSI 71, volume up"
+2026-10-24T15:58:44+00:00,FIL,buy,104.88783162,0.948374,0.0996,99.57,breakout,"broke 5h high 0.9478, above 50-bar avg, RSI 61, volume up"
