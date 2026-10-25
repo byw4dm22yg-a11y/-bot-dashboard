@@ -18,3 +18,7 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-10-25T00:35:43+00:00,XTZ,buy,331.9254679,0.298749,0.0993,99.26,breakout,"broke 5h high 0.2972, above 50-bar avg, RSI 65, volume up"
 2026-10-25T00:35:43+00:00,MANA,buy,1235.82217994,0.08024,0.0993,99.26,breakout,"broke 5h high 0.0796, above 50-bar avg, RSI 66, volume up"
 2026-10-25T00:35:43+00:00,INJ,buy,12.79867528,7.747872,0.0993,99.26,breakout,"broke 5h high 7.704, above 50-bar avg, RSI 70, volume up"
+2026-10-25T02:31:10+00:00,XTZ,sell,331.9254679,0.294053,0.0976,97.51,stop loss,price hit 0.2943 (-1.57% before fees)
+2026-10-25T02:31:10+00:00,MANA,sell,1235.82217994,0.078997,0.0976,97.53,stop loss,price hit 0.07904 (-1.55% before fees)
+2026-10-25T02:31:10+00:00,MKR,buy,0.06164967,1601.095924,0.0988,98.81,breakout,"broke 5h high 1600, above 50-bar avg, RSI 73, volume up"
+2026-10-25T02:31:10+00:00,XMR,buy,0.16042693,615.277211,0.0988,98.81,breakout,"broke 5h high 615.7, above 50-bar avg, RSI 62, volume up"
