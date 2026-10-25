@@ -26,3 +26,5 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-10-25T04:07:13+00:00,HBAR,buy,1260.74923153,0.078169,0.0987,98.65,breakout,"broke 5h high 0.07841, above 50-bar avg, RSI 75, volume up"
 2026-10-25T07:17:45+00:00,XMR,sell,0.16042693,605.745029,0.0972,97.08,stop loss,price hit 606 (-1.55% before fees)
 2026-10-25T08:03:03+00:00,EGLD,buy,29.58191565,3.32116,0.0983,98.34,breakout,"broke 5h high 3.309, above 50-bar avg, RSI 62, volume up"
+2026-10-25T09:01:52+00:00,MKR,sell,0.06164967,1578.979402,0.0973,97.25,time limit,held 6 hours (-1.38% before fees)
+2026-10-25T09:01:52+00:00,EGLD,sell,29.58191565,3.269707,0.0967,96.63,stop loss,price hit 3.271 (-1.55% before fees)
