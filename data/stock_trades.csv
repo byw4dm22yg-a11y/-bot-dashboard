@@ -22,3 +22,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-23T18:40:08.645471+00:00,DDOG,buy,0.28,272.28,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and not more than 30% above sma50.",False
 2026-10-26T17:41:18.756322+00:00,S,buy,2.96,25.33,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of 50-day average.",False
 2026-10-26T17:41:18.756322+00:00,FSLY,buy,2.9,25.85,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of 50-day average.",False
+2026-10-26T18:49:48.873301+00:00,CRWD,buy,0.29,263.14,"All four buy rules met: price above 50-day and 200-day averages, 1-month change positive, and not more than 30% above 50-day average.",False
