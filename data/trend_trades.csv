@@ -1,0 +1,2 @@
+time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
+2026-10-26T18:52:06+00:00,BTC,buy,0.01249245,79968.31,1.0,1000.0,trend,"Bitcoin closed above its 200-day average (80,024 vs 72,945)"
