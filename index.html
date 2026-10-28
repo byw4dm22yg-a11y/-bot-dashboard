@@ -49,7 +49,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
 .meter{height:4px;border-radius:2px;background:#10222f;margin-top:6px;overflow:hidden}
 .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));box-shadow:0 0 8px var(--teal);transition:width 1.2s ease;animation:hueC 22s linear infinite}
 .term{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;line-height:1.7;background:#03060a;border:1px solid var(--line);border-radius:6px;padding:10px 12px;height:210px;overflow:hidden;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:10px}
-.term .s{color:var(--dim)}.term .f{color:var(--teal)}.term .c{color:var(--amber)}.term .k{color:var(--blue)}.term .t{color:#b794ff}
+.term .s{color:var(--dim)}.term .f{color:var(--teal)}.term .c{color:var(--amber)}.term .k{color:var(--blue)}.term .t{color:#b794ff}.term .m{color:#ff7ac6}
 .cur{display:inline-block;width:8px;height:14px;background:var(--teal);vertical-align:-2px;animation:blink 1s steps(1) infinite}
 .pillon{border:1px solid rgba(47,224,208,.5);color:var(--teal);border-radius:4px;padding:2px 7px;font-size:10px;letter-spacing:.12em}
 @media(max-width:520px){.pillon{display:none}.stat{font-size:10px;gap:6px}}
@@ -90,7 +90,7 @@ canvas.ch{display:block;width:100%;height:150px;margin:6px 0 4px}
 .ev{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;padding:10px 0;border-top:1px solid var(--line);align-items:center;font-size:14px}
 .ev:first-child{border-top:0}
 .tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;padding:2px 6px;border:1px solid;white-space:nowrap}
-.tag.stock{color:var(--blue);border-color:var(--blue)}.tag.crypto{color:var(--amber);border-color:var(--amber)}.tag.fast{color:var(--teal);border-color:var(--teal)}.tag.trend{color:#b794ff;border-color:#b794ff}
+.tag.stock{color:var(--blue);border-color:var(--blue)}.tag.crypto{color:var(--amber);border-color:var(--amber)}.tag.fast{color:var(--teal);border-color:var(--teal)}.tag.trend{color:#b794ff;border-color:#b794ff}.tag.meme{color:#ff7ac6;border-color:#ff7ac6}
 .ev small{color:var(--dim);white-space:nowrap}
 .ev span.t{min-width:0;overflow-wrap:anywhere}
 button.more,summary{cursor:pointer;color:var(--teal);font:inherit;font-size:13px;background:none;border:0;padding:10px 0 0;text-align:left}
@@ -114,7 +114,7 @@ td{padding:6px 10px 6px 0;border-top:1px solid var(--line)}
  <div id="out"></div>
  <div class="panel"><div class="bothead"><div><h2>Live log</h2><p class="sub">The newest trades, typed out as they arrive.</p></div></div><div class="term" id="term"></div></div>
  <div id="out2"></div>
- <div class="foot">All four bots use pretend money. Nothing here is advice. Refreshes every 5 minutes.</div>
+ <div class="foot">All five bots use pretend money. Nothing here is advice. Refreshes every 5 minutes.</div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
@@ -132,7 +132,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;","
 const sgn=(x,d)=>(x>=0?"+":"")+x.toFixed(d);
 function ts(s){if(!s)return null;let x=s.trim().replace(" ","T");if(!/[zZ]|[+-]\d\d:?\d\d$/.test(x))x+="Z";const d=new Date(x);return isNaN(d)?null:d}
 function ago(d){if(!d)return"";const m=Math.max(0,Math.round((Date.now()-d)/60000));if(m<2)return"just now";if(m<90)return m+" min ago";const h=Math.round(m/60);if(h<36)return h+"h ago";return Math.round(h/24)+"d ago"}
-const RULE={"stop loss":"hit its safety stop","take profit":"reached its profit target","trailing stop":"locked in profit (trailing stop)","time limit":"held too long (time limit)","breakout":"price broke out","trend":"Bitcoin trend turned"};
+const RULE={"stop loss":"hit its safety stop","take profit":"reached its profit target","trailing stop":"locked in profit (trailing stop)","time limit":"held too long (time limit)","breakout":"price broke out","trend":"Bitcoin trend turned","rug":"liquidity collapsed (rug)","vanished":"coin vanished, written off","momentum":"momentum entry"};
 const money=(n,c)=>c+(n>=100?Math.round(n).toLocaleString():n.toFixed(2));
 // ---- sample data (preview only) ----
 function sampleData(){let s=7;const R=()=>(s=(s*16807)%2147483647)/2147483647;const now=Date.now(),iso=t=>new Date(t).toISOString();
@@ -164,7 +164,7 @@ function table(rows,cols,heads,max){if(!rows.length)return'<div class="empty">No
 const FX=0.75,gbp=v=>{const n=parseFloat(v);return isNaN(n)?esc(v):String(Number((n*FX).toPrecision(4)))};
 let TAB=null,POS={closed:[],open:[]};
 function positions(d){const out={closed:[],open:[]};
- [["stock",d.st,"symbol","action"],["crypto",d.ct,"coin","side"],["fast",d.ft,"coin","side"],["trend",d.tt,"coin","side"]].forEach(([bot,rows,sym,side])=>{const open={};
+ [["stock",d.st,"symbol","action"],["crypto",d.ct,"coin","side"],["fast",d.ft,"coin","side"],["trend",d.tt,"coin","side"],["meme",d.mt,"coin","side"]].forEach(([bot,rows,sym,side])=>{const open={};
   rows.slice().sort((a,b)=>(ts(a.time_utc)||0)-(ts(b.time_utc)||0)).forEach(r=>{const s=r[sym],p=num(r.price),b=/buy/i.test(r[side]||"");if(p==null||!s)return;
    if(b)open[s]={t:ts(r.time_utc),p};else if(open[s]){const o=open[s];out.closed.push({bot,coin:s,tb:o.t,ts:ts(r.time_utc),pb:o.p,ps:p,pct:(p/o.p-1)*100,rule:r.rule});delete open[s]}});
   Object.keys(open).forEach(s=>out.open.push({bot,coin:s,tb:open[s].t,pb:open[s].p}))});
@@ -281,26 +281,27 @@ function radar(now){const tt0=now/1000,hue=(tt0*16)%360,CA="hsla("+Math.round(hu
  requestAnimationFrame(radar)}
 function drawChart(c,pts,prog){const n=Math.max(2,Math.ceil(pts.length*prog));chart(c,pts.slice(0,n),pts)}
 function render(){
- const se=parseCSV(mem.se||""),eq=parseCSV(mem.eq||""),fe=parseCSV(mem.fe||""),ft=parseCSV(mem.ft||""),te=parseCSV(mem.te||""),tt=parseCSV(mem.tt||""),ct=parseCSV(mem.ct||""),dc=parseCSV(mem.dc||""),st=parseCSV(mem.st||"");
+ const se=parseCSV(mem.se||""),eq=parseCSV(mem.eq||""),fe=parseCSV(mem.fe||""),ft=parseCSV(mem.ft||""),te=parseCSV(mem.te||""),tt=parseCSV(mem.tt||""),me=parseCSV(mem.me||""),mt=parseCSV(mem.mt||""),ct=parseCSV(mem.ct||""),dc=parseCSV(mem.dc||""),st=parseCSV(mem.st||"");
  const sp=se.map(r=>[(num(r.account_gbp)/STOCK_START-1)*100,(num(r.vusa_gbp)/VUSA_START-1)*100]).filter(p=>p.every(v=>v!=null&&!isNaN(v)));
- const cp=eq.length?series(eq,"equity_usd","btc_hold_usd"):[],fp=fe.length?series(fe,"equity_usd","btc_hold_usd"):[],tp=te.length?series(te,"equity_usd","btc_hold_usd"):[];
+ const cp=eq.length?series(eq,"equity_usd","btc_hold_usd"):[],fp=fe.length?series(fe,"equity_usd","btc_hold_usd"):[],tp=te.length?series(te,"equity_usd","btc_hold_usd"):[],mp=me.length?series(me.filter(r=>r.btc_hold_usd!==""&&r.btc_hold_usd!=null),"equity_usd","btc_hold_usd"):[];
  const lastv=(rows,k)=>rows.length?num(rows[rows.length-1][k]):null;
  const bots=[
   {id:"c1",name:"Stock bot",sub:"Trading 212 practice account, checks hourly",tag:"stock",pts:sp,col:"#4aa8ff",me:"Stock bot",vs:"Market (VUSA)",vsShort:"the market",val:sp.length?"£"+Math.round(lastv(se,"account_gbp")).toLocaleString():"–",bval:"£"+(STOCK_START*(1+(sp.length?sp[sp.length-1][1]:0)/100)).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,","),note:"Compared with putting the same £5,000 in a market fund.",facts:["Orders <b>"+st.length+"</b>","Check-ins <b>"+sp.length+"</b>"]},
   {id:"c2",name:"Crypto bot",sub:"Slow and careful, asks Claude every 4 hours",tag:"crypto",pts:cp,col:"#ffb23e",me:"Crypto bot",vs:"Holding Bitcoin",vsShort:"holding Bitcoin",val:eq.length?"£"+Math.round(lastv(eq,"equity_usd")*FX):"–",bval:eq.length?"£"+Math.round(lastv(eq,"btc_hold_usd")*FX):"–",note:ct.length?"It trades rarely, by design.":"No trades means it is sitting in cash.",facts:["Orders <b>"+ct.length+"</b>","Check-ins <b>"+cp.length+"</b>"]},
   {id:"c3",name:"Fast bot",sub:"Quick trades on 15 minute prices, fixed rules, no AI",tag:"fast",pts:fp,col:"#2fe0d0",me:"Fast bot",vs:"Holding Bitcoin",vsShort:"holding Bitcoin",val:fe.length?"£"+Math.round(lastv(fe,"equity_usd")*FX):"–",bval:fe.length?"£"+Math.round(lastv(fe,"btc_hold_usd")*FX):"–",note:"Each trade pays a small fee, so it starts a hair behind.",facts:["Orders <b>"+ft.length+"</b>","Check-ins <b>"+fp.length+"</b>"]},
-  {id:"c4",name:"Trend bot",sub:"Holds Bitcoin only while it is in an uptrend, checks once a day, no AI",tag:"trend",pts:tp,col:"#b794ff",me:"Trend bot",vs:"Holding Bitcoin",vsShort:"holding Bitcoin",val:te.length?"£"+Math.round(lastv(te,"equity_usd")*FX):"–",bval:te.length?"£"+Math.round(lastv(te,"btc_hold_usd")*FX):"–",note:"Sits in cash when Bitcoin is below its 200-day average. Judge it on smaller dips, not bigger profits.",facts:["Orders <b>"+tt.length+"</b>","Check-ins <b>"+tp.length+"</b>"]}];
+  {id:"c4",name:"Trend bot",sub:"Holds Bitcoin only while it is in an uptrend, checks once a day, no AI",tag:"trend",pts:tp,col:"#b794ff",me:"Trend bot",vs:"Holding Bitcoin",vsShort:"holding Bitcoin",val:te.length?"£"+Math.round(lastv(te,"equity_usd")*FX):"–",bval:te.length?"£"+Math.round(lastv(te,"btc_hold_usd")*FX):"–",note:"Sits in cash when Bitcoin is below its 200-day average. Judge it on smaller dips, not bigger profits.",facts:["Orders <b>"+tt.length+"</b>","Check-ins <b>"+tp.length+"</b>"]},
+  {id:"c5",name:"Meme bot",sub:"Scans brand new Solana coins every 15 minutes, pretend money, fixed rules, no AI",tag:"meme",pts:mp,col:"#ff7ac6",me:"Meme bot",vs:"Holding SOL",vsShort:"holding SOL",val:me.length?"£"+Math.round(lastv(me,"equity_usd")*FX):"–",bval:me.length&&lastv(me,"btc_hold_usd")!=null?"£"+Math.round(lastv(me,"btc_hold_usd")*FX):"–",note:"New coins are risky. It rejects almost all of them, and costs are charged on every trade.",facts:["Orders <b>"+mt.length+"</b>","Check-ins <b>"+me.length+"</b>"]}];
  // ---- stats + radar data ----
- const PS=[pairStats(st,"symbol","action","price"),pairStats(ct,"coin","side","price"),pairStats(ft,"coin","side","price"),pairStats(tt,"coin","side","price")];
+ const PS=[pairStats(st,"symbol","action","price"),pairStats(ct,"coin","side","price"),pairStats(ft,"coin","side","price"),pairStats(tt,"coin","side","price"),pairStats(mt,"coin","side","price")];
  PS.forEach((s,i)=>bots[i].facts.push("Win rate <b>"+(s.win==null?"–":Math.round(s.win*100)+"%")+"</b>","Open now <b>"+s.open+"</b>"));
- BOTS=bots.map((b,i)=>{const p=b.pts;return{short:["STOCK","CRYPTO","FAST","TREND"][i],gap:p.length?p[p.length-1][0]-p[p.length-1][1]:null}});
+ BOTS=bots.map((b,i)=>{const p=b.pts;return{short:["STOCK","CRYPTO","FAST","TREND","MEME"][i],gap:p.length?p[p.length-1][0]-p[p.length-1][1]:null}});
  let aheadN=0,done=0,leg="";
  bots.forEach((b,i)=>{const g=BOTS[i].gap;if(g==null){leg+='<div class="lg"><i style="background:#3a4d60"></i><div><b>'+b.name+'</b><small>waiting for data</small></div></div>';return}
   done++;if(g>=0)aheadN++;const col=g>=0?"#38e08c":"#ff5d73";
   leg+='<div class="lg" style="border-top:2px solid '+col+'"><i></i><div><b>'+b.name+'</b><small>'+(g>=0?"ahead of ":"behind ")+b.vsShort+'</small></div><span class="gap mono '+(g>=0?"up":"down")+'">'+sgn(g,2)+'</span></div>'});
  $("legend").innerHTML=leg;
  const nClosed=PS.reduce((a,s)=>a+s.n,0),nWins=PS.reduce((a,s)=>a+(s.win==null?0:Math.round(s.win*s.n)),0),nOpen=PS.reduce((a,s)=>a+s.open,0),wr=nClosed?nWins/nClosed*100:null;
- $("tiles").innerHTML='<button class="tile tb" data-t="closed"><span class="lbl">Closed</span><span class="v mono" id="t1">0</span></button><div class="tile"><span class="lbl">Win rate</span><span class="v mono" id="t2">'+(wr==null?"–":"0%")+'</span><div class="meter"><i style="width:'+(wr||0)+'%"></i></div></div><button class="tile tb" data-t="open"><span class="lbl">Open now</span><span class="v mono" id="t3">0</span></button>';;if(!$("posdet")){const d=document.createElement("div");d.id="posdet";$("tiles").after(d);$("tiles").addEventListener("click",ev=>{const b=ev.target.closest(".tb");if(!b)return;TAB=TAB===b.dataset.t?null:b.dataset.t;showPos()})}POS=positions({st,ct,ft,tt});showPos();
+ $("tiles").innerHTML='<button class="tile tb" data-t="closed"><span class="lbl">Closed</span><span class="v mono" id="t1">0</span></button><div class="tile"><span class="lbl">Win rate</span><span class="v mono" id="t2">'+(wr==null?"–":"0%")+'</span><div class="meter"><i style="width:'+(wr||0)+'%"></i></div></div><button class="tile tb" data-t="open"><span class="lbl">Open now</span><span class="v mono" id="t3">0</span></button>';;if(!$("posdet")){const d=document.createElement("div");d.id="posdet";$("tiles").after(d);$("tiles").addEventListener("click",ev=>{const b=ev.target.closest(".tb");if(!b)return;TAB=TAB===b.dataset.t?null:b.dataset.t;showPos()})}POS=positions({st,ct,ft,tt,mt});showPos();
  const fx=firstRun&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
  if(fx){cnt($("t1"),nClosed,x=>Math.round(x),1100);if(wr!=null)cnt($("t2"),wr,x=>Math.round(x)+"%",1100);cnt($("t3"),nOpen,x=>Math.round(x),1100)}else{$("t1").textContent=nClosed;if(wr!=null)$("t2").textContent=Math.round(wr)+"%";$("t3").textContent=nOpen}
  let h="";bots.forEach(b=>h+=botPanel(b));$("out").innerHTML=h;h="";
@@ -310,11 +311,13 @@ function render(){
  ct.forEach(r=>ev.push({t:ts(r.time_utc),bot:"crypto",text:(r.side==="buy"?"Bought ":"Sold ")+"<b>"+esc(r.coin)+"</b> at £"+gbp(r.price)}));
  ft.forEach(r=>ev.push({t:ts(r.time_utc),bot:"fast",text:(r.side==="buy"?"Bought ":"Sold ")+"<b>"+esc(r.coin)+"</b> at £"+gbp(r.price)+(r.side==="sell"?" &middot; "+(RULE[r.rule]||esc(r.rule)):"")}));
  tt.forEach(r=>ev.push({t:ts(r.time_utc),bot:"trend",text:(r.side==="buy"?"Bought ":"Sold ")+"<b>"+esc(r.coin)+"</b> at £"+gbp(r.price)}));
+ mt.forEach(r=>ev.push({t:ts(r.time_utc),bot:"meme",text:(r.side==="buy"?"Bought ":"Sold ")+"<b>"+esc(r.coin)+"</b>"+(r.side==="sell"&&r.rule?" &middot; "+(RULE[r.rule]||esc(r.rule)):"")}));
  ev.sort((a,b)=>(b.t||0)-(a.t||0));
- h+='<div class="panel"><h2>What just happened</h2><p class="sub">The latest pretend trades from all four bots.</p><div id="feed">'+events(ev,showAll?60:8)+"</div>"+(ev.length>8?'<button class="more" id="more">'+(showAll?"Show fewer":"Show more")+"</button>":"")+"</div>";
+ h+='<div class="panel"><h2>What just happened</h2><p class="sub">The latest pretend trades from all five bots.</p><div id="feed">'+events(ev,showAll?60:8)+"</div>"+(ev.length>8?'<button class="more" id="more">'+(showAll?"Show fewer":"Show more")+"</button>":"")+"</div>";
  // details
  h+='<div class="panel"><h2>Full details</h2><p class="sub">The complete logs, if you want to dig in.</p>'+
   '<details><summary>Fast bot trades ('+ft.length+')</summary>'+table(ft,["time_utc","coin","side","price","usd","rule"],["When","Coin","Buy/Sell","Price","Total £","Why it closed"],60)+"</details>"+
+  '<details><summary>Meme bot trades ('+mt.length+')</summary>'+table(mt,["time_utc","coin","side","usd","rule","reason"],["When","Coin","Buy/Sell","Total £","Why it closed","Reason"],60)+"</details>"+
   '<details><summary>Trend bot trades ('+tt.length+')</summary>'+table(tt,["time_utc","coin","side","price","usd","reason"],["When","Coin","Buy/Sell","Price","Total £","Why"],60)+"</details>"+
   '<details><summary>Stock bot trades ('+st.length+')</summary>'+table(st,["time_utc","symbol","action","qty","price","reason"],["When","Stock","Buy/Sell","Amount","Price","Reason"],60)+"</details>"+
   '<details><summary>Crypto bot trades ('+ct.length+')</summary>'+table(ct,["time_utc","coin","side","qty","price","usd"],["When","Coin","Buy/Sell","Amount","Price","Total £"],60)+"</details>"+
@@ -324,8 +327,8 @@ function render(){
  if(fx){const t0=performance.now();const go=n=>{const k=Math.min(1,(n-t0)/1100);bots.forEach(b=>drawChart($(b.id),b.pts,k));if(k<1)requestAnimationFrame(go)};requestAnimationFrame(go)}else bots.forEach(b=>chart($(b.id),b.pts));
  firstRun=false;if(!radarOn){radarOn=true;requestAnimationFrame(radar)}
  EV=ev;const key=ev.slice(0,3).map(e=>e.text).join("|");
- if(key!==lastEvKey){lastEvKey=key;const cls={stock:"k",crypto:"c",fast:"f",trend:"t"};
-  const L=[{text:"> ace desk online, watching 4 bots",html:'<span class="s">&gt; ace desk online, watching 4 bots</span>'}];
+ if(key!==lastEvKey){lastEvKey=key;const cls={stock:"k",crypto:"c",fast:"f",trend:"t",meme:"m"};
+  const L=[{text:"> ace desk online, watching 5 bots",html:'<span class="s">&gt; ace desk online, watching 5 bots</span>'}];
   ev.slice(0,9).reverse().forEach(e=>{const plain=e.text.replace(/<[^>]+>/g,"").replace(/&middot;/g,"·");const tx="> ["+e.bot.toUpperCase()+"] "+plain+" · "+ago(e.t);
    L.push({text:tx,html:'<span class="s">&gt;</span> <span class="'+cls[e.bot]+'">['+e.bot.toUpperCase()+"]</span> "+esc(plain)+' <span class="s">· '+ago(e.t)+"</span>"})});
   typeLines(L)}
@@ -335,7 +338,7 @@ function render(){
  $("live").className="dot"+(stale&&!SAMPLE?" stale":"");$("when").textContent=SAMPLE?"Sample":(lastT?"Updated "+ago(lastT):"Waiting");
  $("badge").innerHTML=SAMPLE?'<span class="badge">SAMPLE DATA</span>':"";
 }
-async function pull(){const f={se:"data/stock_equity.csv",eq:"data/crypto_equity.csv",ct:"data/crypto_trades.csv",dc:"data/crypto_decisions.csv",st:"data/stock_trades.csv",fe:"data/fast_equity.csv",ft:"data/fast_trades.csv",te:"data/trend_equity.csv",tt:"data/trend_trades.csv"};let got=0;
+async function pull(){const f={se:"data/stock_equity.csv",eq:"data/crypto_equity.csv",ct:"data/crypto_trades.csv",dc:"data/crypto_decisions.csv",st:"data/stock_trades.csv",fe:"data/fast_equity.csv",ft:"data/fast_trades.csv",te:"data/trend_equity.csv",tt:"data/trend_trades.csv",me:"https://raw.githubusercontent.com/byw4dm22yg-a11y/meme-paper-bot/main/meme_equity.csv",mt:"https://raw.githubusercontent.com/byw4dm22yg-a11y/meme-paper-bot/main/meme_trades.csv"};let got=0;
  for(const k in f){try{const r=await fetch(f[k]+"?t="+Date.now());if(r.ok){mem[k]=await r.text();got++}}catch(e){}}
  if(!got){SAMPLE=true;Object.assign(mem,sampleData())}else SAMPLE=false;render()}
 const THINK=["Watching 38 coins","Checking stop-losses","Comparing with the market","Reading the latest prices","Weighing the next move","Processing the data"];let thN=0,thD=0;
