@@ -33,3 +33,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-28T15:54:45.240513+00:00,VUAG.L,buy,3.92,112.6,"All four buy rules met: price above SMA50, above SMA200, 1m change positive, and within 30% of SMA50.",False
 2026-10-28T16:54:12.916852+00:00,BEAM,buy,6.12,27.57,"Price above SMA50 and 1-month change positive, but below SMA200; exactly three rules met.",False
 2026-10-28T16:54:12.916852+00:00,EDIT,buy,60.95,2.77,"Price at/above SMA50, above SMA200, and 1-month change positive; price is not meaningfully above SMA50 so three rules clearly met.",False
+2026-10-28T17:48:27.352255+00:00,WING,buy,1.22,140.05,"All four buy rules met: price above SMA50, above SMA200, 1-month change strongly positive, and within 30% of SMA50.",False
+2026-10-28T17:48:27.352255+00:00,NTLA,buy,13.24,12.95,"All four buy rules met: price above SMA50, above SMA200, 1-month change positive, and not more than 30% above SMA50.",False
