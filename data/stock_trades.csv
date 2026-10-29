@@ -37,3 +37,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-28T17:48:27.352255+00:00,NTLA,buy,13.24,12.95,"All four buy rules met: price above SMA50, above SMA200, 1-month change positive, and not more than 30% above SMA50.",False
 2026-10-29T14:58:38.446321+00:00,MRNA,buy,0.78,220.32,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of sma50.",False
 2026-10-29T14:58:38.446321+00:00,SRPT,buy,8.9,19.39,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of sma50.",False
+2026-10-29T15:56:24.557691+00:00,VUAG.L,buy,4.18,111.82,"Three of four buy rules met: price above both averages and 1-month change positive, but not checked for 30% cap breach.",False
+2026-10-29T15:56:24.557691+00:00,TEM,buy,2.27,77.34,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and not more than 30% above sma50.",False
