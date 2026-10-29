@@ -35,3 +35,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-28T16:54:12.916852+00:00,EDIT,buy,60.95,2.77,"Price at/above SMA50, above SMA200, and 1-month change positive; price is not meaningfully above SMA50 so three rules clearly met.",False
 2026-10-28T17:48:27.352255+00:00,WING,buy,1.22,140.05,"All four buy rules met: price above SMA50, above SMA200, 1-month change strongly positive, and within 30% of SMA50.",False
 2026-10-28T17:48:27.352255+00:00,NTLA,buy,13.24,12.95,"All four buy rules met: price above SMA50, above SMA200, 1-month change positive, and not more than 30% above SMA50.",False
+2026-10-29T14:58:38.446321+00:00,MRNA,buy,0.78,220.32,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of sma50.",False
+2026-10-29T14:58:38.446321+00:00,SRPT,buy,8.9,19.39,"All four buy rules met: price above both averages, positive 1-month change, and within 30% of sma50.",False
