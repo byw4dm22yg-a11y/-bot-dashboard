@@ -40,3 +40,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-10-29T15:56:24.557691+00:00,VUAG.L,buy,4.18,111.82,"Three of four buy rules met: price above both averages and 1-month change positive, but not checked for 30% cap breach.",False
 2026-10-29T15:56:24.557691+00:00,TEM,buy,2.27,77.34,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and not more than 30% above sma50.",False
 2026-10-29T19:52:47.105845+00:00,ZS,buy,0.71,247.53,"All four buy rules met: price above both moving averages, positive 1-month change, and not extended beyond 30% above SMA50.",False
+2026-10-30T15:53:44.016388+00:00,VUAG.L,sell,-2.27,109.9,"Price is below its 50-day average and 1-month change is negative, triggering the sell rule.",False
