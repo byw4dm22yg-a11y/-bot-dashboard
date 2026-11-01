@@ -36,3 +36,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-10-31T12:48:13+00:00,NEAR,buy,22.12363108,4.418908,0.0979,97.86,breakout,"broke 24h high 4.421, above 50-bar avg, RSI 74, volume 4x+"
 2026-10-31T19:37:10+00:00,NEAR,sell,22.12363108,4.426586,0.0979,97.83,trailing stop,price hit 4.462 (+0.17% before fees)
 2026-11-01T03:49:28+00:00,AAVE,buy,0.70799835,138.079,0.0979,97.86,breakout,"broke 24h high 138.1, above 50-bar avg, RSI 74, volume 4x+"
+2026-11-01T19:37:57+00:00,AAVE,sell,0.70799835,133.869661,0.0948,94.68,stop loss,price hit 133.9 (-3.05% before fees)
