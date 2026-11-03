@@ -45,3 +45,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-03T14:58:23.890575+00:00,WING,buy,1.01,161.36,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and not more than 30% above sma50.",False
 2026-11-03T15:55:09.604926+00:00,VWRP.L,buy,3.12,140.26,"Three of four buy rules met: price above 200-day average, 1-month change positive, and within 30% of 50-day average; price below 50-day average.",False
 2026-11-03T15:55:09.604926+00:00,TEM,buy,2.02,81.08,"All four buy rules met: price above 50-day and 200-day averages, 1-month change negative fails — only three rules met; confidence 0.6.",False
+2026-11-03T16:58:09.596441+00:00,CAVA,buy,2.73,60.44,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and not more than 30% above sma50.",False
+2026-11-03T16:58:09.596441+00:00,ONON,buy,4.51,36.66,"All four buy rules met: price above sma50, above sma200, 1-month change positive, and within 30% of sma50.",False
