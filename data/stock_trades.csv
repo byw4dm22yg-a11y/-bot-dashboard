@@ -52,3 +52,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-03T19:54:37.452556+00:00,SHAK,buy,2.41,70.57,"All four buy rules met: price above 50-day and 200-day SMA, 1-month change positive, and price not more than 30% above 50-day SMA.",False
 2026-11-04T14:58:02.730353+00:00,DUOL,buy,1.07,163.96,"All four buy rules met: price above 50-day, above 200-day, 1-month change positive, and within 30% of 50-day average.",False
 2026-11-04T16:58:01.207447+00:00,W,buy,1.4,126.1,"All four buy rules met: price above 50-day (126.10 vs 105.59), above 200-day (88.71), 1-month change positive (19.6%), and not more than 30% above 50-day average.",False
+2026-11-04T17:55:52.690320+00:00,CHWY,buy,7.49,23.68,"All four buy rules met: price above both moving averages, 1-month change positive, and not more than 30% above 50-day average.",False
