@@ -54,3 +54,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-04T16:58:01.207447+00:00,W,buy,1.4,126.1,"All four buy rules met: price above 50-day (126.10 vs 105.59), above 200-day (88.71), 1-month change positive (19.6%), and not more than 30% above 50-day average.",False
 2026-11-04T17:55:52.690320+00:00,CHWY,buy,7.49,23.68,"All four buy rules met: price above both moving averages, 1-month change positive, and not more than 30% above 50-day average.",False
 2026-11-04T18:58:10.069111+00:00,FSLR,buy,0.91,196.15,"Three of four buy rules met: price above 50-day, above 200-day, and 1-month change positive; not more than 30% above 50-day also true — wait, price 196.15 vs sma50 187.41 is above, sma200 215.09 price is below; exactly three rules met.",False
+2026-11-05T14:59:35.612561+00:00,U,buy,3.72,46.63,"All four buy rules met: price above 50-day (46.63>42.28), above 200-day (46.63>31.65), 1-month change positive (2.6%), and within 30% of 50-day.",False
