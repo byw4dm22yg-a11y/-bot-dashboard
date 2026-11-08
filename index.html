@@ -46,7 +46,7 @@ details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;co
 .ticker{overflow:hidden;border:1px solid var(--line);border-radius:3px;margin-top:10px;background:var(--panel);white-space:nowrap}
 .tr{display:inline-block;padding:6px 0;animation:mq 28s linear infinite}.tr span{margin:0 18px;font-size:11px}.tr i{font-style:normal;font-weight:700}
 @keyframes mq{to{transform:translateX(-50%)}}
-.scan:after{content:"";position:absolute;left:0;right:0;height:140px;top:-140px;background:linear-gradient(180deg,transparent,rgba(47,134,255,.07),transparent);animation:sw 6s linear infinite}
+
 @keyframes sw{to{top:100%}}
 .logo{animation:fk 5s infinite}@keyframes fk{0%,92%,100%{opacity:1}93%{opacity:.5}95%{opacity:1}97%{opacity:.6}}
 .box{animation:rise .6s ease-out both}.box:nth-child(2){animation-delay:.1s}.box:nth-child(3){animation-delay:.2s}.box:nth-child(4){animation-delay:.3s}
@@ -94,7 +94,7 @@ tr{animation:rise .5s ease-out both}tr:nth-child(2){animation-delay:.1s}tr:nth-c
  <div class="top"><div class="logo">ATLAS<small>BOT DESK</small></div><div class="st"><span id="badge"></span><span class="dot" id="live"></span><span id="when">Loading</span></div></div>
  <div class="ticker"><div id="tick"></div></div>
  <div class="stats" id="stats"></div>
- <div class="pan w2"><canvas id="brain" style="height:310px"></canvas><div class="sub">Closer to the sun = further ahead of its benchmark. Green ring = beating it, red = behind, and the number is the gap. Orange moons are a bot’s open trades, and a planet flashes when a real trade appears in your logs. The asteroid belt, stars and trails are decoration.</div></div>
+ <div class="pan w2"><canvas id="brain" style="height:310px"></canvas><div class="sub">Each bright line is one bot’s real return, and a scanner beam sweeps across making the lines flare as it passes. The faint strands, glow and beam are decoration. The leaderboard below says which line is which.</div></div>
 <div class="pan"><h2>LIVE FLOW &middot; TOKEN CONVEYOR <span class="sub" style="font-weight:400;letter-spacing:.06em">animation ticks every second</span></h2>
  <div class="flow"><div class="fl-track"></div><div class="fl-nodes" id="fnodes"></div><div id="toks"></div></div>
  <div class="rejbar"><span>REJECTED <b id="rejn">0</b> <span class="sub">(visual only)</span></span><span>DATA AGE <span class="sec" id="age">--</span>s</span><span>TICK <span class="sec" id="tickn">0</span></span></div></div>
@@ -360,7 +360,7 @@ function brainInit(){const c=$("brain");if(!c||c._i)return;c._i=1;c.style.touchA
  c.addEventListener("dblclick",()=>{CAM.tz=CAM.tz>1.6?1:2.4;CAM.last=performance.now()})}
 const STARS=(()=>{let s=21;const R=()=>(s=(s*16807)%2147483647)/2147483647,a=[];for(let i=0;i<140;i++)a.push([R(),R(),R()]);return a})();
 const BELT=(()=>{let s=33;const R=()=>(s=(s*16807)%2147483647)/2147483647,a=[];for(let i=0;i<220;i++)a.push([R()*6.283,2.05+R()*.18,(R()-.5)*.05]);return a})();
-function drawBrain(now){const c=$("brain");if(!c)return;brainInit();const x=c.getContext("2d"),W=c.width=c.clientWidth*2,H=c.height=c.clientHeight*2;x.clearRect(0,0,W,H);
+function drawBrainOld(now){const c=$("brain");if(!c)return;brainInit();const x=c.getContext("2d"),W=c.width=c.clientWidth*2,H=c.height=c.clientHeight*2;x.clearRect(0,0,W,H);
  if(!CAM.drag){if(now-CAM.last>2500){CAM.vy*=.9;CAM.yaw+=(.5*Math.sin(now/9000)-CAM.yaw)*.01;CAM.pitch+=(-.55+.1*Math.sin(now/6000)-CAM.pitch)*.012;CAM.vp*=.95}CAM.yaw+=CAM.vy;CAM.pitch=Math.max(-1.45,Math.min(.3,CAM.pitch+CAM.vp));CAM.vp*=.96}
  CAM.zoom+=(CAM.tz-CAM.zoom)*.12;
  const cy=Math.cos(CAM.yaw),sy=Math.sin(CAM.yaw),cp=Math.cos(CAM.pitch),sp=Math.sin(CAM.pitch),S=Math.min(W,H*1.2)*.255*CAM.zoom,D=5;
@@ -394,6 +394,36 @@ function drawBrain(now){const c=$("brain");if(!c)return;brainInit();const x=c.ge
  x.font="18px monospace";x.fillStyle="#6f86a8";x.fillText("drag to spin · pinch to zoom · double-tap to fly in",14,H-12)}
 let hl=0;setInterval(()=>{const r=document.querySelectorAll("#tape .r");r.forEach(e=>e.classList.remove("hl"));if(r.length){hl=(hl+1)%r.length;r[hl].classList.add("hl")}},900);
 const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+const WM={x:.5,y:.5};
+const blob=(x,px,py,r,c,a)=>{const g=x.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,"#fff");g.addColorStop(.25,c);g.addColorStop(1,"rgba(0,0,0,0)");x.globalAlpha=a==null?1:a;x.fillStyle=g;x.beginPath();x.arc(px,py,r,0,7);x.fill();x.globalAlpha=1};
+function waveInit(){const c=$("brain");if(!c||c._w)return;c._w=1;c.style.cursor="default";c.style.touchAction="pan-y";const mv=e=>{const r=c.getBoundingClientRect();WM.x=(e.clientX-r.left)/r.width;WM.y=(e.clientY-r.top)/r.height};c.addEventListener("pointermove",mv);c.addEventListener("pointerdown",mv)}
+function hexId(r){let h=0,str=(r.coin||"")+(r.t||0);for(let i=0;i<str.length;i++)h=(h*31+str.charCodeAt(i))>>>0;return"#"+h.toString(16).toUpperCase().padStart(6,"0").slice(-6)}
+function drawBrain(now){const c=$("brain");if(!c)return;waveInit();const sc=c.clientWidth>900?1.3:2,x=c.getContext("2d"),W=c.width=Math.round(c.clientWidth*sc),H=c.height=Math.round(c.clientHeight*sc),t=now;
+ x.fillStyle="#010309";x.fillRect(0,0,W,H);
+ const slot=Math.floor(now/1800);if(BRN.slot!==slot){BRN.slot=slot;if(BRN.rows.length){const r=BRN.rows[slot%BRN.rows.length];BRN.fire[r.bot]=now;BRN.last[r.bot]=r}}
+ const C=ANIM.C;if(!C)return;const ks=Object.keys(C).filter(k=>C[k].bot.length>1),fs=Math.max(15,Math.min(24,H*.036));
+ let mn=1e9,mx=-1e9;ks.forEach(k=>C[k].bot.forEach(p=>{mn=Math.min(mn,p[1]);mx=Math.max(mx,p[1])}));if(!(mx-mn>.01)){mn-=1;mx+=1}
+ const m=(mx-mn)*.35;mn-=m;mx+=m;const cyc=(t%6000)/6000,su=-.08+cyc*1.24,x0=W*.03,x1=W*.97,Y=v=>H*.08+(1-(v-mn)/(mx-mn))*H*.84;
+ const val=(ser,u)=>{const f=u*(ser.length-1),i=Math.floor(f),j=Math.min(ser.length-1,i+1);return ser[i][1]+(ser[j][1]-ser[i][1])*(f-i)};
+ // scanning beam
+ {const bx=x0+(x1-x0)*su,bw=W*.02,ba=Math.max(0,Math.min(1,su*12,(1.04-su)*12)),g=x.createLinearGradient(bx-bw*2.5,0,bx+bw*2.5,0);g.addColorStop(0,"rgba(47,134,255,0)");g.addColorStop(.4,"rgba(47,134,255,.4)");g.addColorStop(.5,"rgba(191,224,255,.9)");g.addColorStop(.6,"rgba(47,134,255,.4)");g.addColorStop(1,"rgba(47,134,255,0)");x.globalAlpha=ba;x.fillStyle=g;x.fillRect(bx-bw*2.5,H*.04,bw*5,H*.92);x.fillStyle="rgba(255,255,255,.7)";x.fillRect(bx-1.5,H*.04,3,H*.92);x.globalAlpha=1}
+ x.globalCompositeOperation="lighter";
+ const NS=Math.max(40,Math.min(70,Math.round(W/22))),NP=Math.round(Math.min(110,W/7));
+ const lw=sc/2,P=(fn,u0,u1)=>{u0=Math.max(0,u0);u1=Math.min(1,u1);if(u1<=u0)return false;x.beginPath();let first=1;for(let q=Math.floor(u0*NP);q<=Math.ceil(u1*NP);q++){const u=Math.min(1,q/NP),p=fn(u);first?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1]);first=0}return true};
+ ks.forEach((k,ki)=>{const ser=C[k].bot,col=COL[k]||"#7fe8ff";const base=u=>[x0+(x1-x0)*u,Y(val(ser,u))];
+  for(let s=0;s<NS;s++){const ph=s*1.37+ki*5.1,ph2=s*2.71+ki*1.3,amp=((s%11)+1)/11*(mx-mn)*.32*(s%2?1:-1);const fn=u=>[x0+(x1-x0)*u,Y(val(ser,u)+amp*Math.pow(u,1.3)*(Math.sin(u*8+ph+t/1700)+.6*Math.sin(u*19+ph2-t/1000))*.7)];x.strokeStyle=col;
+   x.lineWidth=1.5;x.globalAlpha=.1;P(fn,0,1)&&x.stroke();
+   x.lineWidth=1.8;x.globalAlpha=.14;P(fn,su-.34,su+.03)&&x.stroke();x.globalAlpha=.16;P(fn,su-.2,su+.025)&&x.stroke();x.lineWidth=2.2;x.globalAlpha=.2;P(fn,su-.1,su+.02)&&x.stroke();x.lineWidth=2.6;x.globalAlpha=.4;P(fn,su-.04,su+.01)&&x.stroke()}
+  x.strokeStyle=col;x.lineWidth=2.4;x.globalAlpha=.38;P(base,0,1)&&x.stroke();
+  x.lineWidth=9;x.globalAlpha=.16;P(base,su-.3,su+.03)&&x.stroke();
+  x.lineWidth=3;x.globalAlpha=.3;P(base,su-.3,su+.03)&&x.stroke();x.globalAlpha=.3;P(base,su-.16,su+.03)&&x.stroke();x.globalAlpha=.35;P(base,su-.08,su+.02)&&x.stroke();
+  x.strokeStyle="#fff";x.lineWidth=2.4;x.globalAlpha=.85;P(base,su-.07,su+.01)&&x.stroke();
+  blob(x,x1,Y(val(ser,1)),10+8*Math.max(0,1-Math.abs(su-1)*8),col,.8)});
+ x.globalCompositeOperation="source-over";x.globalAlpha=1;
+ x.font=Math.round(fs*.7)+"px monospace";x.fillStyle="#6f86a8";x.fillText((W<900?"bright = real returns · rest = decoration":"bright lines = real bot returns · faint strands, glow, beam = decoration"),x0,H-6);
+ x.fillStyle="rgba(0,0,0,.14)";for(let y=0;y<H;y+=4)x.fillRect(0,y,W,1.5);
+}
 function loop(now){drawBrain(now);if(ANIM.big){const p=RM?1:Math.min(1,(now-BIGS.t0)/1400),e=1-Math.pow(1-p,3),C=ANIM.C,s=BIGS.sel;if(C&&C[s])drawFocus($("big"),C[s].bot,C[s].bench,COL[s],RM?0:now,Object.keys(C).filter(k=>k!==s).map(k=>({l:C[k].bot,col:COL[k]})),BIGS.mode,e);const pc=RM?1:Math.min(1,(now-ANIM.t0)/1500);ANIM.cards.forEach(c=>{const el=$(c.id);if(el)drawFocus(el,c.lines[0],c.lines[1],c.cols[0],RM?0:now,[],"vs",pc)})}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);bigTabs();
 pull();setInterval(pull,60000);addEventListener("resize",render);
