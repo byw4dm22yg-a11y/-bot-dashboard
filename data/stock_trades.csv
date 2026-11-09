@@ -61,3 +61,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-06T17:51:06.049451+00:00,PTON,buy,28.96,5.81,"All four buy rules met: price above 50-day, above 200-day, 1-month change positive, and not more than 30% above 50-day average.",False
 2026-11-06T17:51:06.049451+00:00,FOUR,buy,3.81,44.16,"All four buy rules met: price above 50-day, 1-month positive, within 30% of 50-day, and above 200-day.",False
 2026-11-09T14:57:57.670423+00:00,TEM,buy,2.09,82.53,"All four buy rules met: price above 50-day and 200-day averages, 1-month change positive, and price not more than 30% above 50-day average.",False
+2026-11-09T16:02:53.692301+00:00,BB,buy,18.94,9.1,"All four buy rules met: price above 50-day and 200-day averages, positive 1-month change, and not more than 30% above 50-day average.",False
+2026-11-09T16:02:53.692301+00:00,CELH,buy,5.28,32.65,"All four buy rules met: price above 50-day and 200-day averages, positive 1-month change, and not more than 30% above 50-day average.",False
