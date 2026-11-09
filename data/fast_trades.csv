@@ -48,3 +48,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-09T13:06:27+00:00,AVAX,buy,11.57204309,8.379187,0.0971,97.06,day breakout,"broke first-4h high 8.096, above 50-bar avg, volume 1.5x+"
 2026-11-09T13:06:27+00:00,DOT,buy,110.33226074,0.878839,0.0971,97.06,day breakout,"broke first-4h high 0.8754, above 50-bar avg, volume 1.5x+"
 2026-11-09T13:06:27+00:00,RUNE,buy,165.36049445,0.586381,0.0971,97.06,day breakout,"broke first-4h high 0.5812, above 50-bar avg, volume 1.5x+"
+2026-11-09T14:22:08+00:00,AVAX,sell,11.57204309,8.62527,0.0998,99.71,trailing stop,price hit 8.63 (+2.94% before fees)
