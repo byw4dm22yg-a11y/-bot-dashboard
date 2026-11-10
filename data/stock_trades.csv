@@ -65,3 +65,5 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-09T16:02:53.692301+00:00,CELH,buy,5.28,32.65,"All four buy rules met: price above 50-day and 200-day averages, positive 1-month change, and not more than 30% above 50-day average.",False
 2026-11-09T18:57:55.979234+00:00,RBLX,buy,3.36,52.34,"All four buy rules met: price above sma50, sma200, positive 1-month change, and within 30% of sma50.",False
 2026-11-09T18:57:55.979234+00:00,EDIT,buy,60.06,2.93,"All four buy rules met: price above sma50, sma200, positive 1-month change, and within 30% of sma50.",False
+2026-11-10T14:58:16.728816+00:00,VUAG.L,sell,-2.3,108.46,Price is below 50-day average and 1-month change is negative; sell rule triggered.,False
+2026-11-10T14:58:16.728816+00:00,VWRP.L,sell,-1.79,139.8,Price is below 50-day average and 1-month change is negative; sell rule triggered.,False
