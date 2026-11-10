@@ -53,3 +53,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-09T22:18:49+00:00,DOT,sell,110.33226074,0.85644,0.0945,94.4,stop loss,price hit 0.8569 (-2.55% before fees)
 2026-11-10T05:52:24+00:00,VET,buy,18440.02510762,0.005257,0.097,97.03,day breakout,"broke first-4h high 0.005204, above 50-bar avg, volume 1.5x+"
 2026-11-10T05:52:24+00:00,FET,buy,665.63993618,0.145623,0.097,97.03,day breakout,"broke first-4h high 0.145, above 50-bar avg, volume 1.5x+"
+2026-11-10T08:13:46+00:00,TRX,buy,304.0363367,0.318925,0.0971,97.06,day breakout,"broke first-4h high 0.3176, above 50-bar avg, volume 1.5x+"
