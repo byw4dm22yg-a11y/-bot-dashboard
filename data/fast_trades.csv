@@ -60,3 +60,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-11T04:57:07+00:00,XMR,buy,0.16958679,568.023189,0.0964,96.43,day breakout,"broke first-4h high 566.1, above 50-bar avg, volume 1.5x+"
 2026-11-11T08:32:18+00:00,AVAX,buy,11.20920428,8.592294,0.0964,96.41,day breakout,"broke first-4h high 8.54, above 50-bar avg, volume 1.5x+"
 2026-11-11T10:30:10+00:00,DOT,buy,112.84534126,0.855428,0.0966,96.63,day breakout,"broke first-4h high 0.8509, above 50-bar avg, volume 1.5x+"
+2026-11-11T13:46:28+00:00,XMR,sell,0.16958679,568.065984,0.0963,96.24,trailing stop,price hit 570.7 (+0.01% before fees)
