@@ -68,3 +68,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-10T14:58:16.728816+00:00,VUAG.L,sell,-2.3,108.46,Price is below 50-day average and 1-month change is negative; sell rule triggered.,False
 2026-11-10T14:58:16.728816+00:00,VWRP.L,sell,-1.79,139.8,Price is below 50-day average and 1-month change is negative; sell rule triggered.,False
 2026-11-10T15:52:19.378984+00:00,U,buy,3.41,50.03,"All four buy rules met: price above 50-day (50.03>42.81), above 200-day (50.03>31.79), 1-month change positive (+7.2%), and price not more than 30% above 50-day.",False
+2026-11-11T15:55:23.112197+00:00,RIOT,buy,9.05,18.73,"All four buy rules met: price above 50-day and 200-day averages, positive 1-month change, and not more than 30% above 50-day average.",False
