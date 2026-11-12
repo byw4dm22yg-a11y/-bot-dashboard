@@ -72,3 +72,4 @@ time_utc,symbol,action,qty,price,reason,dry_run
 2026-11-12T14:58:02.508818+00:00,AMD,buy,0.3,562.57,"All four buy rules met: price above 50-day and 200-day averages, 1-month change positive, and price not more than 30% above 50-day average.",False
 2026-11-12T14:58:02.508818+00:00,TSLA,buy,0.42,393.87,"All four buy rules met: price above 50-day and 200-day averages, positive 1-month change, and within 30% of 50-day average.",False
 2026-11-12T16:02:38.349157+00:00,TEM,buy,2.24,75.54,"All four buy rules met: price above sma50, above sma200, positive 1-month change, and not more than 30% above sma50.",False
+2026-11-12T17:58:59.562128+00:00,AMC,buy,51.25,3.33,"All four buy rules met: price above 50-day (3.33>2.94), above 200-day (3.33>2.05), 1-month change positive (+15.2%), and price not more than 30% above 50-day average.",False
