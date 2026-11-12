@@ -62,3 +62,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-11T10:30:10+00:00,DOT,buy,112.84534126,0.855428,0.0966,96.63,day breakout,"broke first-4h high 0.8509, above 50-bar avg, volume 1.5x+"
 2026-11-11T13:46:28+00:00,XMR,sell,0.16958679,568.065984,0.0963,96.24,trailing stop,price hit 570.7 (+0.01% before fees)
 2026-11-11T23:23:57+00:00,DOT,sell,112.84534126,0.833625,0.0941,93.98,stop loss,price hit 0.834 (-2.55% before fees)
+2026-11-12T00:22:47+00:00,AVAX,sell,11.20920428,8.503746,0.0953,95.22,end of day,day trader: closed by end of UTC day (-1.03% before fees)
