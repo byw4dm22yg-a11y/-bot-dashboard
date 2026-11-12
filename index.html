@@ -335,7 +335,7 @@ function candleLoop(now){drawCandles(now);requestAnimationFrame(candleLoop)}
 candleTabs();requestAnimationFrame(candleLoop);
 
 // ---- gauge, rules, log ----
-const RULES=["Stock bot: stop-loss 8%, trailing stop starts at +10%, 5% drop","Fast bot: stop 3%, take profit 7.5%, trailing 2%","Meme bot: stop 6%, trailing stop, rug and time limits","Trend bot: only holds Bitcoin above its 200-day average","Pretend money only. 60% win rate before real money"];
+const RULES=["Stock bot: index funds VUAG and VWRP are the core (40% each, never sold). Stock picks: stop-loss 8%, trailing stop from +10%, 5% drop","Fast bot: day trader. Buys a break of the first-4-hours high (04:00-16:00 UTC), stop 2.5%, trailing 1.5% after +2%, everything closed by midnight UTC","Meme bot: stop 6%, trailing stop, rug and time limits","Trend bot: only holds Bitcoin above its 200-day average","Pretend money only. 60% win rate before real money"];
 function drawGauge(wr,tm){const c=$("gauge");if(!c)return;const x=c.getContext("2d"),W=c.width=c.clientWidth*2,H=c.height=c.clientHeight*2,cx=W/2,cy=H-10,R=Math.min(W/2-20,H-24);x.clearRect(0,0,W,H);x.lineCap="round";x.lineWidth=18;x.strokeStyle="#0d2347";x.beginPath();x.arc(cx,cy,R,Math.PI,2*Math.PI);x.stroke();
  const v=wr==null?0:Math.min(1,wr/100),pulse=.8+.2*Math.sin(tm/300),col=wr==null?"#6f86a8":wr>=60?"#19ff8c":wr>=40?"#ffb23e":"#ff3b57";x.strokeStyle=col;x.shadowColor=col;x.shadowBlur=18*pulse;x.beginPath();x.arc(cx,cy,R,Math.PI,Math.PI+Math.PI*v);x.stroke();x.shadowBlur=0;
  const a=Math.PI+Math.PI*.6;x.strokeStyle="#fff";x.lineWidth=4;x.beginPath();x.moveTo(cx+Math.cos(a)*(R-14),cy+Math.sin(a)*(R-14));x.lineTo(cx+Math.cos(a)*(R+14),cy+Math.sin(a)*(R+14));x.stroke()}
