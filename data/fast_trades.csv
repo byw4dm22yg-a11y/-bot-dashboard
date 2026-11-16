@@ -72,3 +72,4 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-16T15:04:06+00:00,ICP,buy,39.8562682,2.401,0.0958,95.79,day breakout,"broke first-4h high 2.269, above 50-bar avg, volume 1.5x+"
 2026-11-16T15:04:06+00:00,ETH,buy,0.05234683,1828.093644,0.0958,95.79,day breakout,"broke first-4h high 1837, above 50-bar avg, volume 1.5x+"
 2026-11-16T15:04:06+00:00,ATOM,buy,72.07767395,1.327664,0.0958,95.79,day breakout,"broke first-4h high 1.315, above 50-bar avg, volume 1.5x+"
+2026-11-16T16:41:30+00:00,ICP,sell,39.8562682,2.437148,0.0971,97.04,trailing stop,price hit 2.438 (+1.51% before fees)
