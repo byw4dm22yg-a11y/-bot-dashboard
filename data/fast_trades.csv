@@ -69,3 +69,6 @@ time_utc,coin,side,qty,price,fee_usd,usd,rule,reason
 2026-11-15T11:39:29+00:00,INJ,sell,13.31661252,7.019998,0.0935,93.39,stop loss,price hit 7.024 (-2.55% before fees)
 2026-11-16T00:22:34+00:00,XMR,sell,0.19195465,499.051924,0.0958,95.7,end of day,day trader: closed by end of UTC day (-0.14% before fees)
 2026-11-16T00:22:34+00:00,BCH,sell,0.45939152,210.604652,0.0967,96.65,end of day,day trader: closed by end of UTC day (+0.86% before fees)
+2026-11-16T15:04:06+00:00,ICP,buy,39.8562682,2.401,0.0958,95.79,day breakout,"broke first-4h high 2.269, above 50-bar avg, volume 1.5x+"
+2026-11-16T15:04:06+00:00,ETH,buy,0.05234683,1828.093644,0.0958,95.79,day breakout,"broke first-4h high 1837, above 50-bar avg, volume 1.5x+"
+2026-11-16T15:04:06+00:00,ATOM,buy,72.07767395,1.327664,0.0958,95.79,day breakout,"broke first-4h high 1.315, above 50-bar avg, volume 1.5x+"
